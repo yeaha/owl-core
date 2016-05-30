@@ -16,7 +16,10 @@
     },
     "autoload": {
         "psr-4": {
-            "Owl\\": "src/"
+            "Owl\\": "src/",
+            "Owl\\Middleware\\": "src/Middleware/",
+            "Owl\\Parameter\\": "src/Parameter/",
+            "Owl\\Traits\\": "src/Traits/"
         },
         "files": ["src/constant.php", "src/functions.php"]
     },
