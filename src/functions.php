@@ -1,7 +1,5 @@
 <?php
-
-namespace Owl
-{
+namespace Owl {
     /**
      * @param string $string
      *
@@ -10,8 +8,8 @@ namespace Owl
     function str_has_tags($string)
     {
         return is_string($string)
-            && strlen($string) > 2
-            && $string !== strip_tags($string);
+        && strlen($string) > 2
+        && $string !== strip_tags($string);
     }
 
     function array_set_in(array &$target, array $path, $value, $push = false)
@@ -155,16 +153,5 @@ namespace Owl
         }
 
         return $value;
-    }
-}
-
-namespace Owl\Service
-{
-    function get($id)
-    {
-        $args = func_get_args();
-        $container = \Owl\Service\Container::getInstance();
-
-        return call_user_func_array([$container, 'get'], $args);
     }
 }
