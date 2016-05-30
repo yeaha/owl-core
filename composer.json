@@ -16,9 +16,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Owl\\": "src/",
-            "Tests\\": "tests/"
+            "Owl\\": "src/"
         },
         "files": ["src/constant.php", "src/functions.php"]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
     }
 }
