@@ -1,8 +1,11 @@
 <?php
 namespace Tests\Parameter;
 
+use Owl\Parameter\Validator;
+
 class ValidatorTest extends \PHPUnit_Framework_TestCase
 {
+    /** @var Validator */
     private $validator;
 
     public function testRequired()
@@ -186,7 +189,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
                             ],
                         ],
                         'd' => [
-                            'type' => 'array',
+                            'type'  => 'array',
                             'value' => [
                                 'type' => 'array',
                                 'keys' => [
@@ -227,7 +230,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
             ],
             [
                 'a' => [
-                    'type' => 'array',
+                    'type'  => 'array',
                     'value' => [
                         'type' => 'array',
                         'keys' => [
@@ -258,7 +261,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
             ],
             [
                 'a' => [
-                    'type' => 'array',
+                    'type'  => 'array',
                     'value' => ['type' => 'integer'],
                 ],
             ],
@@ -297,7 +300,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
                             ],
                         ],
                         'd' => [
-                            'type' => 'array',
+                            'type'  => 'array',
                             'value' => [
                                 'type' => 'array',
                                 'keys' => [
@@ -338,7 +341,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
             ],
             [
                 'a' => [
-                    'type' => 'json',
+                    'type'  => 'json',
                     'value' => [
                         'type' => 'array',
                         'keys' => [
@@ -360,7 +363,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
             ],
             [
                 'a' => [
-                    'type' => 'object',
+                    'type'       => 'object',
                     'instanceof' => '\stdClass',
                 ],
             ]
@@ -372,7 +375,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
             ],
             [
                 'a' => [
-                    'type' => 'object',
+                    'type'       => 'object',
                     'instanceof' => '\stdClass',
                 ],
             ],
@@ -432,6 +435,23 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         foreach ($test as $value) {
             $this->execute(['email' => $value], ['email' => ['type' => 'email']]);
         }
+    }
+
+    public function testIPV4()
+    {
+        $this->execute([
+            'valid_ip1' => '0.0.0.0',
+            'valid_ip2' => '255.199.99.9',
+            'valid_ip3' => '255.255.255.255',
+        ], [
+            'valid_ip1' => ['type' => 'ipv4'],
+            'valid_ip2' => ['type' => 'ipv4'],
+            'valid_ip3' => ['type' => 'ipv4'],
+        ]);
+
+        $this->tryExecute(['invalid_ip' => '0.0.0'], ['invalid_ip' => ['type' => 'ipv4']], 'test invalid IP1 failed');
+        $this->tryExecute(['invalid_ip' => '01.9.9.9'], ['invalid_ip' => ['type' => 'ipv4']], 'test invalid IP2 failed');
+        $this->tryExecute(['invalid_ip' => '256.255.255.255'], ['invalid_ip' => ['type' => 'ipv4']], 'test invalid IP3 failed');
     }
 
     public function testAllowTags()

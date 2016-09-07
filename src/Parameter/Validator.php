@@ -91,28 +91,28 @@ class Validator
 {
     public static $types = [
         'integer' => [
-            'regexp' => '/^\-?\d+$/',
+            'regexp'         => '/^\-?\d+$/',
             'allow_negative' => false,
-            'allow_zero' => true,
+            'allow_zero'     => true,
         ],
         'numeric' => [
-            'regexp' => '/^\-?\d+(?:\.\d+)?$/',
+            'regexp'         => '/^\-?\d+(?:\.\d+)?$/',
             'allow_negative' => false,
-            'allow_zero' => true,
+            'allow_zero'     => true,
         ],
-        'email' => [
+        'email'   => [
             'regexp' => '/^([0-9a-z\.\-\+\_])+@([0-9a-z\-\.])+\.[a-z]{2,8}$/i',
         ],
-        'url' => [
+        'url'     => [
             'regexp' => '#^[a-z]+://[0-9a-z\-\.]+\.[0-9a-z]{1,4}(?:\d+)?(?:/[^\?]*)?(?:\?[^\#]*)?(?:\#[0-9a-z\-\_\/]*)?$#',
         ],
-        'uri' => [
+        'uri'     => [
             'regexp' => '#^/(?:[^?]*)?(?:\?[^\#]*)?(?:\#[0-9a-z\-\_\/]*)?$#',
         ],
-        'ipv4' => [
-            'regexp' => '/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/',
+        'ipv4'    => [
+            'regexp' => '/^(?:2(?:[0-4]\d|5[0-5])|1\d{2}|[1-9]?\d)(?:\.(?:2(?:[0-4]\d|5[0-5])|1\d{2}|[1-9]?\d)){3}$/',
         ],
-        'uuid' => [
+        'uuid'    => [
             'regexp' => '/^[0-9a-f]{8}\-[0-9a-f]{4}\-[0-9a-f]{4}\-[0-9a-f]{4}\-[0-9a-f]{12}$/i',
         ],
     ];
@@ -316,11 +316,11 @@ class Validator
         }
 
         $rule = array_merge([
-            'required' => true,
-            'allow_empty' => false,
-            'allow_tags' => false,
-            'regexp' => '',
-            'callback' => null,
+            'required'       => true,
+            'allow_empty'    => false,
+            'allow_tags'     => false,
+            'regexp'         => '',
+            'callback'       => null,
             '__normalized__' => true,
         ], $rule);
 
@@ -330,9 +330,9 @@ class Validator
     private function exception($key, $message)
     {
         $this->path[] = $key;
-        $message = 'Key ['.implode('=>', $this->path).'], '.$message;
+        $message      = 'Key ['.implode('=>', $this->path).'], '.$message;
 
-        $exception = new \Owl\Parameter\Exception($message);
+        $exception            = new \Owl\Parameter\Exception($message);
         $exception->parameter = $key;
 
         return $exception;

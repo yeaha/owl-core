@@ -74,11 +74,12 @@ class Middleware
             return;
         }
 
-        $stack = [];
+        $stack  = [];
         $result = null;
+
         foreach ($handlers as $handler) {
             // reset before each loop, only save last handler return value
-            $result = null;
+            $result    = null;
             $generator = call_user_func_array($handler, $arguments);
 
             if ($generator instanceof \Generator) {
@@ -99,17 +100,17 @@ class Middleware
         }
 
         $return = ($result !== null);
+
+        // PHP7之前没有Generator::getReturn()
+        if (version_compare(PHP_VERSION, '7.0.0', '<')) {
+            $return = true;
+        }
         while ($generator = array_pop($stack)) {
             if ($return) {
                 $generator->send($result);
             }
 
             $generator->next();
-
-            // PHP7之前没有Generator::getReturn()
-            if (version_compare(PHP_VERSION, '7.0.0', '<')) {
-                $return = true;
-            }
 
             if (!$return) {
                 $return = true;
