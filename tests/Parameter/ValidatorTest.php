@@ -417,6 +417,23 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    public function testEmail()
+    {
+        $test = [
+            'foobar@example.cn',
+            'foobar@example.com',
+            'foobar@example.com.cn',
+            'foobar@example.online',
+            'foo-bar@example.com',
+            'foo+bar@example.com',
+            'foo_bar@example.com',
+        ];
+
+        foreach ($test as $value) {
+            $this->execute(['email' => $value], ['email' => ['type' => 'email']]);
+        }
+    }
+
     public function testAllowTags()
     {
         $this->execute(
