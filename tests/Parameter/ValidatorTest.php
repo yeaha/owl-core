@@ -385,7 +385,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 
     public function testURL()
     {
-        $options = ['foo' => ['type' => 'url']];
+        $options = ['url' => ['type' => 'url']];
 
         $test = [
             'http://192.168.1.1/',
@@ -395,10 +395,11 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
             'http://192.168.1.1/foo/bar?a=b',
             'http://192.168.1.1/foo/bar?a=b#',
             'http://192.168.1.1/foo/bar?a=b#c/d',
+            'http://192.168.1.1:888/foo/bar?a=b#c/d',
         ];
 
         foreach ($test as $value) {
-            $this->execute(['foo' => $value], $options);
+            $this->execute(['url' => $value], $options);
         }
     }
 
