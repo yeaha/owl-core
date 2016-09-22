@@ -390,12 +390,17 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $test = [
             'http://192.168.1.1/',
             'http://192.168.1.1/#',
+            'http://192.168.1.1/#foobar',
             'http://192.168.1.1/foo/bar',
             'http://192.168.1.1/foo/bar?',
             'http://192.168.1.1/foo/bar?a=b',
             'http://192.168.1.1/foo/bar?a=b#',
             'http://192.168.1.1/foo/bar?a=b#c/d',
             'http://192.168.1.1:888/foo/bar?a=b#c/d',
+            'http://user@www.example.com/foo/bar?a=b#c/d',
+            'http://user@www.example.com./foo/bar?a=b#c/d',
+            'http://user:pass@www.example.com:80/foo/bar?a=b#c/d',
+            'http://user:pass@www.example.com.:80/foo/bar?a=b#c/d',
         ];
 
         foreach ($test as $value) {
