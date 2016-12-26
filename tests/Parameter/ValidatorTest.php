@@ -189,7 +189,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
                             ],
                         ],
                         'd' => [
-                            'type'  => 'array',
+                            'type' => 'array',
                             'value' => [
                                 'type' => 'array',
                                 'keys' => [
@@ -230,7 +230,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
             ],
             [
                 'a' => [
-                    'type'  => 'array',
+                    'type' => 'array',
                     'value' => [
                         'type' => 'array',
                         'keys' => [
@@ -261,7 +261,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
             ],
             [
                 'a' => [
-                    'type'  => 'array',
+                    'type' => 'array',
                     'value' => ['type' => 'integer'],
                 ],
             ],
@@ -300,7 +300,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
                             ],
                         ],
                         'd' => [
-                            'type'  => 'array',
+                            'type' => 'array',
                             'value' => [
                                 'type' => 'array',
                                 'keys' => [
@@ -341,7 +341,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
             ],
             [
                 'a' => [
-                    'type'  => 'json',
+                    'type' => 'json',
                     'value' => [
                         'type' => 'array',
                         'keys' => [
@@ -363,7 +363,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
             ],
             [
                 'a' => [
-                    'type'       => 'object',
+                    'type' => 'object',
                     'instanceof' => '\stdClass',
                 ],
             ]
@@ -375,7 +375,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
             ],
             [
                 'a' => [
-                    'type'       => 'object',
+                    'type' => 'object',
                     'instanceof' => '\stdClass',
                 ],
             ],

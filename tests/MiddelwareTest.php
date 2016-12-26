@@ -120,7 +120,8 @@ class MiddelwareTest extends \PHPUnit_Framework_TestCase
             yield new \Owl\Middleware\Arguments('b', 'c');
         })->bindTo($this));
 
-        $middleware->insert(function () {});
+        $middleware->insert(function () {
+        });
         $middleware->insert((function ($b, $c) {
             $this->assertEquals('b', $b);
             $this->assertEquals('c', $c);

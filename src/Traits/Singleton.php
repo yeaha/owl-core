@@ -5,7 +5,7 @@ namespace Owl\Traits;
 // 单例模式
 trait Singleton
 {
-    protected static $__instances__ = array();
+    protected static $__instances__ = [];
 
     protected function __construct()
     {
@@ -13,7 +13,7 @@ trait Singleton
 
     public function __clone()
     {
-        throw new \Exception('Cloning '.__CLASS__.' is not allowed');
+        throw new \Exception('Cloning ' . __CLASS__ . ' is not allowed');
     }
 
     public static function getInstance()

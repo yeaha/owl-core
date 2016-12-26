@@ -15,7 +15,7 @@ class Arguments implements \ArrayAccess
 {
     private $arguments;
 
-    public function __construct( /*$arguments1[, $arguments2[, ...]]*/)
+    public function __construct(/*$arguments1[, $arguments2[, ...]]*/)
     {
         $this->arguments = func_get_args();
     }
