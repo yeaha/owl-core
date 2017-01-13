@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Owl;
 
@@ -35,7 +36,7 @@ class Container
      * @param string  $id
      * @param Closure $callback
      */
-    public function set($id, \Closure $callback)
+    public function set(string $id, \Closure $callback)
     {
         $this->callbacks[$id] = $callback;
     }
@@ -47,7 +48,7 @@ class Container
      *
      * @return bool
      */
-    public function has($id)
+    public function has(string $id)
     {
         return isset($this->callbacks[$id]);
     }
@@ -64,7 +65,7 @@ class Container
      *
      * @throws 指定的$id不存在时
      */
-    public function get($id)
+    public function get(string $id)
     {
         if (isset($this->values[$id])) {
             return $this->values[$id];
@@ -83,7 +84,7 @@ class Container
      *
      * @return bool
      */
-    public function remove($id)
+    public function remove(string $id): bool
     {
         unset($this->callbacks[$id]);
         unset($this->values[$id]);
@@ -100,7 +101,7 @@ class Container
      *
      * @throws 指定的$id不存在时
      */
-    public function getCallback($id)
+    public function getCallback(string $id): \Closure
     {
         if ($this->has($id)) {
             return $this->callbacks[$id];

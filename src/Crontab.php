@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Owl;
 
@@ -22,7 +23,7 @@ abstract class Crontab
      *
      * @return bool
      */
-    public function start()
+    public function start(): bool
     {
         $try = $this->tryStart();
         $this->log('debug', 'try start', [
@@ -73,7 +74,7 @@ abstract class Crontab
      *
      * @return bool
      */
-    protected function tryStart()
+    protected function tryStart(): bool
     {
         // 检查是否达到预定时间
         try {
@@ -132,7 +133,7 @@ abstract class Crontab
      *
      * @return bool
      */
-    protected function testTimer()
+    protected function testTimer(): bool
     {
         return false;
     }
@@ -154,7 +155,7 @@ abstract class Crontab
         }
     }
 
-    protected function getName()
+    protected function getName(): string
     {
         return $this->name ?: get_class($this);
     }

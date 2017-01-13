@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Owl\Middleware;
 
 /**
@@ -20,12 +22,12 @@ class Arguments implements \ArrayAccess
         $this->arguments = func_get_args();
     }
 
-    public function toArray()
+    public function toArray(): array
     {
         return $this->arguments;
     }
 
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->arguments[$offset]);
     }

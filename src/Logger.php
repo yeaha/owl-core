@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Owl;
 
 use Psr\Log\LoggerInterface;
@@ -17,19 +19,19 @@ class Logger
         self::$logger = null;
     }
 
-    public static function getLogger()
+    public static function getLogger(): LoggerInterface
     {
         return self::$logger;
     }
 
-    public static function log($level, $message, array $context = [])
+    public static function log($level, string $message, array $context = [])
     {
         if ($logger = self::$logger) {
             $logger->log($level, $message, $context);
         }
     }
 
-    public static function logException($exception, array $context)
+    public static function logException(\Throwable $exception, array $context)
     {
         if (!$logger = self::$logger) {
             return;

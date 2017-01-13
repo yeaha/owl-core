@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Owl;
 
 /**
@@ -6,14 +8,14 @@ namespace Owl;
  *
  * @return bool
  */
-function str_has_tags($string)
+function str_has_tags(string $string): bool
 {
     return is_string($string)
     && strlen($string) > 2
     && $string !== strip_tags($string);
 }
 
-function array_set_in(array &$target, array $path, $value, $push = false)
+function array_set_in(array &$target, array $path, $value, bool $push = false)
 {
     $last_key = array_pop($path);
 
@@ -108,7 +110,7 @@ function array_unset_in(array &$target, array $path)
  * // ];
  * $value = \Owl\array_trim($value);
  */
-function array_trim(array $target)
+function array_trim(array $target): array
 {
     $keys = array_keys($target);
     $is_array = ($keys === array_keys($keys));
@@ -134,7 +136,7 @@ function array_trim(array $target)
     return $result;
 }
 
-function safe_json_encode($value, $options = 0, $depth = 512)
+function safe_json_encode($value, int $options = 0, int $depth = 512): array
 {
     $value = json_encode($value, $options, $depth);
 
@@ -145,7 +147,7 @@ function safe_json_encode($value, $options = 0, $depth = 512)
     return $value;
 }
 
-function safe_json_decode($json, $assoc = false, $depth = 512, $options = 0)
+function safe_json_decode($json, bool $assoc = false, int $depth = 512, int $options = 0)
 {
     $value = json_decode($json, $assoc, $depth, $options);
 

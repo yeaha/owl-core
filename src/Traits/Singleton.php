@@ -1,5 +1,4 @@
 <?php
-
 namespace Owl\Traits;
 
 // 单例模式

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Owl;
 
 use Owl\Middleware\Arguments;
@@ -51,7 +53,7 @@ class Middleware
      *
      * @return $this
      */
-    public function insert($handler)
+    public function insert($handler): Middleware
     {
         if (!is_callable($handler)) {
             throw new \Exception('Middleware handler is not callable.');
@@ -101,10 +103,6 @@ class Middleware
 
         $return = ($result !== null);
 
-        // PHP7之前没有Generator::getReturn()
-        if (version_compare(PHP_VERSION, '7.0.0', '<')) {
-            $return = true;
-        }
         while ($generator = array_pop($stack)) {
             if ($return) {
                 $generator->send($result);
