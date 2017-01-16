@@ -136,7 +136,7 @@ function array_trim(array $target): array
     return $result;
 }
 
-function safe_json_encode($value, int $options = 0, int $depth = 512): array
+function safe_json_encode($value, int $options = 0, int $depth = 512): string
 {
     $value = json_encode($value, $options, $depth);
 
