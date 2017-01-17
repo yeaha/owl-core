@@ -36,7 +36,7 @@ class Container
      * @param string  $id
      * @param Closure $callback
      */
-    public function set(string $id, \Closure $callback)
+    public function set(string $id, callable $callback)
     {
         $this->callbacks[$id] = $callback;
     }
@@ -48,7 +48,7 @@ class Container
      *
      * @return bool
      */
-    public function has(string $id)
+    public function has(string $id): bool
     {
         return isset($this->callbacks[$id]);
     }
@@ -101,7 +101,7 @@ class Container
      *
      * @throws 指定的$id不存在时
      */
-    public function getCallback(string $id): \Closure
+    public function getCallback(string $id): callable
     {
         if ($this->has($id)) {
             return $this->callbacks[$id];
