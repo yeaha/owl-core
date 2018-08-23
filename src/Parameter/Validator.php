@@ -1,4 +1,5 @@
 <?php
+
 namespace Owl\Parameter;
 
 /**
@@ -140,6 +141,25 @@ class Validator
 
     private $path = [];
 
+    /**
+     * 数据是否符合检查规则，不抛出异常而是返回boolean.
+     *
+     * @param array $values
+     * @param array $rules
+     *
+     * @return bool
+     */
+    public function is(array $values, array $rules)
+    {
+        try {
+            $this->execute($values, $rules);
+        } catch (\Exception $ex) {
+            return false;
+        }
+
+        return true;
+    }
+
     public function execute(array $values, array $rules)
     {
         foreach ($rules as $key => $rule) {
@@ -154,7 +174,7 @@ class Validator
             }
 
             $value = $values[$key];
-            if ($value === '' || $value === [] || $value === null) {
+            if ('' === $value || $value === [] || null === $value) {
                 if (!$rule['allow_empty']) {
                     throw $this->exception($key, 'not allow empty');
                 }
@@ -218,16 +238,16 @@ class Validator
             }
         }
 
-        if ($rule['type'] === 'boolean') {
+        if ('boolean' === $rule['type']) {
             if (!is_bool($value)) {
                 throw $this->exception($key, sprintf('must be TRUE or FALSE, current value is "%s"', $value));
             }
-        } elseif ($rule['type'] === 'integer' || $rule['type'] === 'numeric') {
+        } elseif ('integer' === $rule['type'] || 'numeric' === $rule['type']) {
             if ($value < 0 && !$rule['allow_negative']) {
                 throw $this->exception($key, sprintf('not allow negative numeric, current value is "%s"', $value));
             }
 
-            if ($value == 0 && !$rule['allow_zero']) {
+            if (0 == $value && !$rule['allow_zero']) {
                 throw $this->exception($key, sprintf('not allow zero, current value is "%s"', $value));
             }
         } elseif (!$rule['allow_tags'] && \Owl\str_has_tags($value)) {
