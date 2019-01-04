@@ -16,6 +16,9 @@ trait Singleton
         throw new \Exception('Cloning ' . __CLASS__ . ' is not allowed');
     }
 
+    /**
+     * @return static
+     */
     public static function getInstance()
     {
         $class = get_called_class();
