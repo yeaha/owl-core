@@ -189,7 +189,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
                             ],
                         ],
                         'd' => [
-                            'type'  => 'array',
+                            'type' => 'array',
                             'value' => [
                                 'type' => 'array',
                                 'keys' => [
@@ -230,7 +230,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
             ],
             [
                 'a' => [
-                    'type'  => 'array',
+                    'type' => 'array',
                     'value' => [
                         'type' => 'array',
                         'keys' => [
@@ -261,7 +261,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
             ],
             [
                 'a' => [
-                    'type'  => 'array',
+                    'type' => 'array',
                     'value' => ['type' => 'integer'],
                 ],
             ],
@@ -300,7 +300,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
                             ],
                         ],
                         'd' => [
-                            'type'  => 'array',
+                            'type' => 'array',
                             'value' => [
                                 'type' => 'array',
                                 'keys' => [
@@ -341,7 +341,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
             ],
             [
                 'a' => [
-                    'type'  => 'json',
+                    'type' => 'json',
                     'value' => [
                         'type' => 'array',
                         'keys' => [
@@ -363,7 +363,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
             ],
             [
                 'a' => [
-                    'type'       => 'object',
+                    'type' => 'object',
                     'instanceof' => '\stdClass',
                 ],
             ]
@@ -375,7 +375,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
             ],
             [
                 'a' => [
-                    'type'       => 'object',
+                    'type' => 'object',
                     'instanceof' => '\stdClass',
                 ],
             ],
@@ -385,20 +385,26 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 
     public function testURL()
     {
-        $options = ['foo' => ['type' => 'url']];
+        $options = ['url' => ['type' => 'url']];
 
         $test = [
             'http://192.168.1.1/',
             'http://192.168.1.1/#',
+            'http://192.168.1.1/#foobar',
             'http://192.168.1.1/foo/bar',
             'http://192.168.1.1/foo/bar?',
             'http://192.168.1.1/foo/bar?a=b',
             'http://192.168.1.1/foo/bar?a=b#',
             'http://192.168.1.1/foo/bar?a=b#c/d',
+            'http://192.168.1.1:888/foo/bar?a=b#c/d',
+            'http://user@www.example.com/foo/bar?a=b#c/d',
+            'http://user@www.example.com./foo/bar?a=b#c/d',
+            'http://user:pass@www.example.com:80/foo/bar?a=b#c/d',
+            'http://user:pass@www.example.com.:80/foo/bar?a=b#c/d',
         ];
 
         foreach ($test as $value) {
-            $this->execute(['foo' => $value], $options);
+            $this->execute(['url' => $value], $options);
         }
     }
 
@@ -417,6 +423,23 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 
         foreach ($test as $value) {
             $this->execute(['foo' => $value], $options);
+        }
+    }
+
+    public function testEmail()
+    {
+        $test = [
+            'foobar@example.cn',
+            'foobar@example.com',
+            'foobar@example.com.cn',
+            'foobar@example.online',
+            'foo-bar@example.com',
+            'foo+bar@example.com',
+            'foo_bar@example.com',
+        ];
+
+        foreach ($test as $value) {
+            $this->execute(['email' => $value], ['email' => ['type' => 'email']]);
         }
     }
 

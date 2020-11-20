@@ -1,4 +1,5 @@
 <?php
+
 namespace Owl\Parameter;
 
 /**
@@ -91,30 +92,73 @@ class Validator
 {
     public static $types = [
         'integer' => [
-            'regexp'         => '/^\-?\d+$/',
+            'regexp' => '/^\-?\d+$/',
             'allow_negative' => false,
-            'allow_zero'     => true,
+            'allow_zero' => true,
         ],
         'numeric' => [
-            'regexp'         => '/^\-?\d+(?:\.\d+)?$/',
+            'regexp' => '/^\-?\d+(?:\.\d+)?$/',
             'allow_negative' => false,
-            'allow_zero'     => true,
+            'allow_zero' => true,
         ],
-        'url'     => [
-            'regexp' => '#^[a-z]+://[0-9a-z\-\.]+\.[0-9a-z]{1,4}(?:\d+)?(?:/[^\?]*)?(?:\?[^\#]*)?(?:\#[0-9a-z\-\_\/]*)?$#',
+        'email' => [
+            'regexp' => '/^([0-9a-z\.\-\+\_])+@([0-9a-z\-\.])+\.[a-z]{2,8}$/i',
         ],
-        'uri'     => [
-            'regexp' => '#^/(?:[^?]*)?(?:\?[^\#]*)?(?:\#[0-9a-z\-\_\/]*)?$#',
+        'url' => [
+            // [a-z]+://                            // scheme
+            // (?:                                  // user:password
+            //     \w+
+            //     (?:
+            //         \:\w+
+            //     )?
+            //     \@
+            // )?
+            // [0-9a-z\-\.]+\.[0-9a-z]{1,8}         // host
+            // (?:
+            //     \:\d{2,5}                        // port
+            // )?
+            // (?:
+            //     /[^\?]*                          // path
+            // )?
+            // (?:
+            //     \?[^\#]*                         // query
+            // )?
+            // (?:
+            //     \#[0-9a-z\-\_\/]*                // fragment
+            // )?
+            'regexp' => '#^[a-z]+://(?:\w+(?:\:\w+)?\@)?[0-9a-z\-\.]+\.[0-9a-z]{1,8}\.?(?:\:\d{2,5})?(?:/[^\?]*)?(?:\?[^\#]*)?(?:\#[0-9a-z\-\_\/]*)?$#i',
         ],
-        'ipv4'    => [
+        'uri' => [
+            'regexp' => '#^/(?:[^?]*)?(?:\?[^\#]*)?(?:\#[0-9a-z\-\_\/]*)?$#i',
+        ],
+        'ipv4' => [
             'regexp' => '/^(?:2(?:[0-4]\d|5[0-5])|1\d{2}|[1-9]?\d)(?:\.(?:2(?:[0-4]\d|5[0-5])|1\d{2}|[1-9]?\d)){3}$/',
         ],
-        'uuid'    => [
+        'uuid' => [
             'regexp' => '/^[0-9a-f]{8}\-[0-9a-f]{4}\-[0-9a-f]{4}\-[0-9a-f]{4}\-[0-9a-f]{12}$/i',
         ],
     ];
 
     private $path = [];
+
+    /**
+     * 数据是否符合检查规则，不抛出异常而是返回boolean.
+     *
+     * @param array $values
+     * @param array $rules
+     *
+     * @return bool
+     */
+    public function is(array $values, array $rules)
+    {
+        try {
+            $this->execute($values, $rules);
+        } catch (\Exception $ex) {
+            return false;
+        }
+
+        return true;
+    }
 
     public function execute(array $values, array $rules)
     {
@@ -130,7 +174,7 @@ class Validator
             }
 
             $value = $values[$key];
-            if ($value === '' || $value === [] || $value === null) {
+            if ('' === $value || $value === [] || null === $value) {
                 if (!$rule['allow_empty']) {
                     throw $this->exception($key, 'not allow empty');
                 }
@@ -194,16 +238,16 @@ class Validator
             }
         }
 
-        if ($rule['type'] === 'boolean') {
+        if ('boolean' === $rule['type']) {
             if (!is_bool($value)) {
                 throw $this->exception($key, sprintf('must be TRUE or FALSE, current value is "%s"', $value));
             }
-        } elseif ($rule['type'] === 'integer' || $rule['type'] === 'numeric') {
+        } elseif ('integer' === $rule['type'] || 'numeric' === $rule['type']) {
             if ($value < 0 && !$rule['allow_negative']) {
                 throw $this->exception($key, sprintf('not allow negative numeric, current value is "%s"', $value));
             }
 
-            if ($value == 0 && !$rule['allow_zero']) {
+            if (0 == $value && !$rule['allow_zero']) {
                 throw $this->exception($key, sprintf('not allow zero, current value is "%s"', $value));
             }
         } elseif (!$rule['allow_tags'] && \Owl\str_has_tags($value)) {
@@ -267,7 +311,7 @@ class Validator
         try {
             $value = \Owl\safe_json_decode($value, true);
         } catch (\UnexpectedValueException $ex) {
-            throw $this->exception($key, 'json_decode() falied, '.$ex->getMessage());
+            throw $this->exception($key, 'json_decode() falied, ' . $ex->getMessage());
         }
 
         return $this->checkArray($key, $value, $rule);
@@ -313,11 +357,11 @@ class Validator
         }
 
         $rule = array_merge([
-            'required'       => true,
-            'allow_empty'    => false,
-            'allow_tags'     => false,
-            'regexp'         => '',
-            'callback'       => null,
+            'required' => true,
+            'allow_empty' => false,
+            'allow_tags' => false,
+            'regexp' => '',
+            'callback' => null,
             '__normalized__' => true,
         ], $rule);
 
@@ -327,9 +371,9 @@ class Validator
     private function exception($key, $message)
     {
         $this->path[] = $key;
-        $message      = 'Key ['.implode('=>', $this->path).'], '.$message;
+        $message = 'Key [' . implode('=>', $this->path) . '], ' . $message;
 
-        $exception            = new \Owl\Parameter\Exception($message);
+        $exception = new \Owl\Parameter\Exception($message);
         $exception->parameter = $key;
 
         return $exception;

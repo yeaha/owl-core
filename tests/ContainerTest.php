@@ -22,10 +22,10 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     public function testGet()
     {
         $this->container->set('user1', function () {
-             return new User();
-          });
+            return new User();
+        });
 
-        $this->assertInstanceOf('\Tests\User',  $this->container->get('user1'));
+        $this->assertInstanceOf('\Tests\User', $this->container->get('user1'));
         $this->assertInstanceOf('\Tests\Base', $this->container->get('user1'));
     }
 
@@ -56,8 +56,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     public function testRemove()
     {
         $this->container->set('a', function () {
-             return stdClass();
-         });
+            return stdClass();
+        });
         $this->assertTrue($this->container->remove('a'));
     }
 

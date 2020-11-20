@@ -74,12 +74,12 @@ class Middleware
             return;
         }
 
-        $stack  = [];
+        $stack = [];
         $result = null;
 
         foreach ($handlers as $handler) {
             // reset before each loop, only save last handler return value
-            $result    = null;
+            $result = null;
             $generator = call_user_func_array($handler, $arguments);
 
             if ($generator instanceof \Generator) {
