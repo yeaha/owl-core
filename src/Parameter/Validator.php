@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Owl\Parameter;
 
 /**
@@ -233,7 +235,7 @@ class Validator
 
             throw $this->exception($key, sprintf('must be equal one of [%s], current value is "%s"', implode(', ', $rule['enum_eq']), $value));
         } elseif ($regexp = $rule['regexp']) {
-            if (!preg_match($regexp, $value)) {
+            if (!preg_match($regexp, strval($value))) {
                 throw $this->exception($key, sprintf('mismatch regexp %s, current value is "%s"', $regexp, $value));
             }
         }

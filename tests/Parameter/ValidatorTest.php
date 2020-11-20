@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Tests\Parameter;
 
 use Owl\Parameter\Validator;
