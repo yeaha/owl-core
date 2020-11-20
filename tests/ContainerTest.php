@@ -1,6 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests;
+
+use PHPUnit\Framework\TestCase;
 
 class Base
 {
@@ -12,7 +16,7 @@ class User extends Base
 {
 }
 
-class ContainerTest extends \PHPUnit_Framework_TestCase
+class ContainerTest extends TestCase
 {
     /**
      * @var \Owl\Container
@@ -25,8 +29,9 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
             return new User();
         });
 
-        $this->assertInstanceOf('\Tests\User', $this->container->get('user1'));
-        $this->assertInstanceOf('\Tests\Base', $this->container->get('user1'));
+        $this->assertInstanceOf(User::class, $this->container->get('user1'));
+        $this->assertInstanceOf(Base::class, $this->container->get('user1'));
+        $this->assertNotInstanceOf(Foo::class, $this->container->get('user1'));
     }
 
     public function testGetCallback()
@@ -39,7 +44,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
 
     public function testGetUndefinedMember()
     {
-        $this->setExpectedExceptionRegExp('\Exception', '/does not exists/');
+        $this->expectDeprecationMessageMatches('/does not exists/');
 
         $this->container->get('undefined key');
     }
@@ -47,7 +52,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     public function testHas()
     {
         $this->container->set('obj1', function () {
-            return stdClass();
+            return new class{};
         });
         $this->assertTrue($this->container->has('obj1'));
         $this->assertFalse($this->container->has('obj2'));
@@ -56,12 +61,12 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     public function testRemove()
     {
         $this->container->set('a', function () {
-            return stdClass();
+            return new class{};
         });
         $this->assertTrue($this->container->remove('a'));
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->container = new \Owl\Container();
     }

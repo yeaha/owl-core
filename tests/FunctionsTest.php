@@ -1,8 +1,12 @@
 <?php
 
-namespace tests;
+declare(strict_types=1);
 
-class FunctionsTest extends \PHPUnit_Framework_TestCase
+namespace Tests;
+
+use PHPUnit\Framework\TestCase;
+
+class FunctionsTest extends TestCase
 {
     public function testStrHasTags()
     {
@@ -155,17 +159,17 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
 
     public function testArraySetInException()
     {
-        $target = ['a' => ['b' => 1]];
+        $this->expectException(\RuntimeException::class);
 
-        $this->setExpectedException('\RuntimeException');
+        $target = ['a' => ['b' => 1]];
         \Owl\array_set_in($target, ['a', 'b', 'c'], 2);
     }
 
     public function testArrayPushInException()
     {
-        $target = ['a' => ['b' => 1]];
+        $this->expectException(\RuntimeException::class);
 
-        $this->setExpectedException('\RuntimeException');
+        $target = ['a' => ['b' => 1]];
         \Owl\array_push_in($target, ['a', 'b'], 2);
     }
 
@@ -209,20 +213,17 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
         ], \Owl\array_trim($target));
     }
 
-    public function testSafeJson()
+    public function testSafeJson1()
     {
-        try {
-            $json = '{a:1';
-            \Owl\safe_json_decode($json, true);
-            $this->fail('test safe_json_decode() failed');
-        } catch (\UnexpectedValueException $ex) {
-        }
+        $this->expectException(\UnexpectedValueException::class);
 
-        try {
-            $string = substr('爱', 0, 1);
-            \Owl\safe_json_encode($string);
-            $this->fail('test safe_json_encode() failed');
-        } catch (\UnexpectedValueException $ex) {
-        }
+        \Owl\safe_json_decode('{a:1', true);
+    }
+
+    public function testSafeJson2()
+    {
+        $this->expectException(\UnexpectedValueException::class);
+        $string = substr('爱', 0, 1);
+        \Owl\safe_json_encode($string);
     }
 }

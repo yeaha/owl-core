@@ -1,9 +1,13 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Tests\Parameter;
 
 use Owl\Parameter\Validator;
+use PHPUnit\Framework\TestCase;
 
-class ValidatorTest extends \PHPUnit_Framework_TestCase
+class ValidatorTest extends TestCase
 {
     /** @var Validator */
     private $validator;
@@ -491,7 +495,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->validator = new \Owl\Parameter\Validator();
     }

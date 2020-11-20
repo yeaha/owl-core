@@ -1,7 +1,12 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Tests;
 
-class MiddelwareTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class MiddlewareTest extends TestCase
 {
     public function test()
     {
@@ -134,7 +139,7 @@ class MiddelwareTest extends \PHPUnit_Framework_TestCase
     {
         $middleware = new \Owl\Middleware();
 
-        $this->setExpectedExceptionRegExp('\Exception', '/is not callable/');
+        $this->expectExceptionMessageMatches('/is not callable/');
         $middleware->insert(1);
     }
 }
