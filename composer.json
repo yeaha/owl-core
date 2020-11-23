@@ -11,7 +11,7 @@
         }
     ],
     "require": {
-        "php": ">=7.4.0",
+        "php": ">=8.0.0",
         "psr/log": "~1.0"
     },
     "require-dev": {
@@ -24,7 +24,10 @@
             "Owl\\Traits\\": "src/Traits/",
             "Owl\\": "src/"
         },
-        "files": ["src/constant.php", "src/functions.php"]
+        "files": [
+            "src/constant.php",
+            "src/functions.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
