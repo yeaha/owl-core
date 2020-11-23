@@ -53,14 +53,11 @@ class Middleware
      *
      * @param callable $handler
      *
-     * @return $this
+     * @return self
+     * @throws
      */
-    public function insert($handler)
+    public function insert(callable $handler): self
     {
-        if (!is_callable($handler)) {
-            throw new \Exception('Middleware handler is not callable.');
-        }
-
         $this->handlers[] = $handler;
 
         return $this;
@@ -75,7 +72,7 @@ class Middleware
      *
      * @return mixed
      */
-    public function execute(array $arguments = [], array $handlers = [])
+    public function execute(array $arguments = [], array $handlers = []): mixed
     {
         $handlers = $handlers ?: $this->handlers;
 
