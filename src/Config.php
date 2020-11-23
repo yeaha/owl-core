@@ -24,14 +24,14 @@ namespace Owl;
  */
 class Config
 {
-    private static $config = [];
+    private static array $config = [];
 
-    public static function merge(array $config)
+    public static function merge(array $config): void
     {
         self::$config = array_merge(self::$config, $config);
     }
 
-    public static function get($keys = null)
+    public static function get($keys = null): mixed
     {
         $keys = ($keys === null ? [] : is_array($keys)) ? $keys : func_get_args();
 

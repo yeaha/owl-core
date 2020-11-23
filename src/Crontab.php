@@ -4,27 +4,28 @@ declare(strict_types=1);
 
 namespace Owl;
 
+use Owl\Traits\Context;
+use Psr\Log\LoggerInterface;
+
 abstract class Crontab
 {
-    use \Owl\Traits\Context;
+    use Context;
 
     const KEY_PROC_ID = '__proc_id__';
     const KEY_PROC_TIME = '__proc_start__';
 
-    protected $name;
+    protected string $name;
 
-    protected $timeout = 600;
+    protected int $timeout = 600;
 
     abstract protected function execute();
 
-    private static $logger;
+    private static ?LoggerInterface $logger;
 
     /**
-     * 执行任务
-     *
-     * @return bool
+     * 执行任务.
      */
-    public function start()
+    public function start(): bool
     {
         $try = $this->tryStart();
         $this->log('debug', 'try start', [
@@ -61,7 +62,7 @@ abstract class Crontab
     /**
      * 任务执行完毕.
      */
-    public function stop()
+    public function stop(): void
     {
         $this->removeContext(self::KEY_PROC_ID);
         $this->removeContext(self::KEY_PROC_TIME);
@@ -71,11 +72,9 @@ abstract class Crontab
     }
 
     /**
-     * 尝试开始任务
-     *
-     * @return bool
+     * 尝试开始任务.
      */
-    protected function tryStart()
+    protected function tryStart(): bool
     {
         // 检查是否达到预定时间
         try {
@@ -131,29 +130,26 @@ abstract class Crontab
 
     /**
      * 是否达到任务可执行时间.
-     *
-     * @return bool
      */
-    protected function testTimer()
+    protected function testTimer(): bool
     {
         return false;
     }
 
-    protected function log($level, $message, array $context = [])
+    protected function log($level, $message, array $context = []): void
     {
-        if ($logger = self::$logger) {
-            $defaults = [
-                'class' => get_class($this),
-            ];
-
-            if ($this->name) {
-                $defaults['name'] = $this->name;
-            }
-
-            $context = array_merge($defaults, $context);
-
-            $logger->log($level, $message, $context);
+        if (!self::$logger) {
+            return;
         }
+
+        $defaults = ['class' => get_class($this)];
+        if ($this->name) {
+            $defaults['name'] = $this->name;
+        }
+
+        $context = array_merge($defaults, $context);
+
+        self::$logger->log($level, $message, $context);
     }
 
     protected function getName()
@@ -161,7 +157,7 @@ abstract class Crontab
         return $this->name ?: get_class($this);
     }
 
-    public static function setLogger(\Psr\Log\LoggerInterface $logger)
+    public static function setLogger(LoggerInterface $logger)
     {
         self::$logger = $logger;
     }

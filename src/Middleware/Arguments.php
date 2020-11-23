@@ -16,34 +16,34 @@ namespace Owl\Middleware;
  */
 class Arguments implements \ArrayAccess
 {
-    private $arguments;
+    private array $arguments = [];
 
     public function __construct(/*$arguments1[, $arguments2[, ...]]*/)
     {
         $this->arguments = func_get_args();
     }
 
-    public function toArray()
+    public function toArray(): array
     {
         return $this->arguments;
     }
 
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->arguments[$offset]);
     }
 
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->arguments[$offset];
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->arguments[$offset] = $value;
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->arguments[$offset]);
     }

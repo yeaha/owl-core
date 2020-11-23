@@ -8,38 +8,39 @@ use Psr\Log\LoggerInterface;
 
 class Logger
 {
-    private static $logger;
+    private static ?LoggerInterface $logger;
 
-    public static function setLogger(LoggerInterface $logger)
+    public static function setLogger(LoggerInterface $logger): void
     {
         self::$logger = $logger;
     }
 
-    public static function unsetLogger()
+    public static function unsetLogger(): void
     {
         self::$logger = null;
     }
 
-    public static function getLogger()
+    public static function getLogger(): ?LoggerInterface
     {
         return self::$logger;
     }
 
-    public static function log($level, $message, array $context = [])
+    public static function log($level, $message, array $context = []): void
     {
         if ($logger = self::$logger) {
             $logger->log($level, $message, $context);
         }
     }
 
-    public static function logException($exception, array $context)
+    public static function logException($exception, array $context): void
     {
         if (!$logger = self::$logger) {
             return;
         }
 
         if ($previous = $exception->getPrevious()) {
-            return self::logException($previous, $context);
+            self::logException($previous, $context);
+            return;
         }
 
         $message = sprintf('%s(%d): %s', get_class($exception), $exception->getCode(), $exception->getMessage());

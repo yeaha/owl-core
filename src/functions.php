@@ -9,14 +9,22 @@ namespace Owl;
  *
  * @return bool
  */
-function str_has_tags($string)
+function str_has_tags($string): bool
 {
     return is_string($string)
     && strlen($string) > 2
     && $string !== strip_tags($string);
 }
 
-function array_set_in(array &$target, array $path, $value, $push = false)
+/**
+ * @param array $target
+ * @param array $path
+ * @param mixed $value
+ * @param bool $push
+ *
+ * @return void
+ */
+function array_set_in(array &$target, array $path, $value, $push = false): void
 {
     $last_key = array_pop($path);
 
@@ -51,10 +59,16 @@ function array_set_in(array &$target, array $path, $value, $push = false)
  *
  * // push in
  * $target[$path][] = $value;
+ *
+ * @param array $target
+ * @param array $path
+ * @param mixed $value
+ *
+ * @return void
  */
-function array_push_in(array &$target, array $path, $value)
+function array_push_in(array &$target, array $path, $value): void
 {
-    return array_set_in($target, $path, $value, true);
+    array_set_in($target, $path, $value, true);
 }
 
 function array_get_in(array $target, array $path)
@@ -70,7 +84,7 @@ function array_get_in(array $target, array $path)
     return $target;
 }
 
-function array_unset_in(array &$target, array $path)
+function array_unset_in(array &$target, array $path): void
 {
     $last_key = array_pop($path);
 
@@ -110,8 +124,12 @@ function array_unset_in(array &$target, array $path)
  * //     ],
  * // ];
  * $value = \Owl\array_trim($value);
+ *
+ * @param array $target
+ *
+ * @return array
  */
-function array_trim(array $target)
+function array_trim(array $target): array
 {
     $keys = array_keys($target);
     $is_array = ($keys === array_keys($keys));
@@ -139,22 +157,10 @@ function array_trim(array $target)
 
 function safe_json_encode($value, $options = 0, $depth = 512)
 {
-    $value = json_encode($value, $options, $depth);
-
-    if ($value === false && json_last_error() !== JSON_ERROR_NONE) {
-        throw new \UnexpectedValueException(json_last_error_msg(), json_last_error());
-    }
-
-    return $value;
+    return json_encode($value, $options | JSON_THROW_ON_ERROR, $depth);
 }
 
 function safe_json_decode($json, $assoc = false, $depth = 512, $options = 0)
 {
-    $value = json_decode(strval($json), $assoc, $depth, $options);
-
-    if ($value === null && json_last_error() !== JSON_ERROR_NONE) {
-        throw new \UnexpectedValueException(json_last_error_msg(), json_last_error());
-    }
-
-    return $value;
+    return json_decode(strval($json), $assoc, $depth, $options | JSON_THROW_ON_ERROR);
 }
