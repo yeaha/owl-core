@@ -4,27 +4,14 @@ declare(strict_types=1);
 
 namespace Owl;
 
-/**
- * @param string $string
- *
- * @return bool
- */
-function str_has_tags($string): bool
+function str_has_tags(string $str): bool
 {
-    return is_string($string)
-    && strlen($string) > 2
-    && $string !== strip_tags($string);
+    return is_string($str)
+    && strlen($str) > 2
+    && $str !== strip_tags($str);
 }
 
-/**
- * @param array $target
- * @param array $path
- * @param mixed $value
- * @param bool $push
- *
- * @return void
- */
-function array_set_in(array &$target, array $path, $value, $push = false): void
+function array_set_in(array &$target, array $path, mixed $value, $push = false): void
 {
     $last_key = array_pop($path);
 
@@ -54,11 +41,11 @@ function array_set_in(array &$target, array $path, $value, $push = false): void
 }
 
 /**
- * // set in
- * $target[$path] = $value;.
- *
- * // push in
- * $target[$path][] = $value;
+ * the difference between array_set_in and array_push_in:
+ * array_set_in:
+ *      $target[$path] = $value;.
+ * array_push_in:
+ *      $target[$path][] = $value;
  *
  * @param array $target
  * @param array $path
@@ -66,7 +53,7 @@ function array_set_in(array &$target, array $path, $value, $push = false): void
  *
  * @return void
  */
-function array_push_in(array &$target, array $path, $value): void
+function array_push_in(array &$target, array $path, mixed $value): void
 {
     array_set_in($target, $path, $value, true);
 }
