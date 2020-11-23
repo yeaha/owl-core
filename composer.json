@@ -26,7 +26,8 @@
         },
         "files": [
             "src/constant.php",
-            "src/functions.php"
+            "src/functions.php",
+            "src/init.php"
         ]
     },
     "autoload-dev": {
