@@ -215,14 +215,14 @@ class FunctionsTest extends TestCase
 
     public function testSafeJson1()
     {
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(\JsonException::class);
 
         \Owl\safe_json_decode('{a:1', true);
     }
 
     public function testSafeJson2()
     {
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(\JsonException::class);
         $string = substr('爱', 0, 1);
         \Owl\safe_json_encode($string);
     }

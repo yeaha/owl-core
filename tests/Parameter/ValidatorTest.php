@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 class ValidatorTest extends TestCase
 {
     /** @var Validator */
-    private $validator;
+    private Validator $validator;
 
     public function testRequired()
     {

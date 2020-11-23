@@ -92,7 +92,7 @@ namespace Owl\Parameter;
  */
 class Validator
 {
-    public static $types = [
+    public static array $types = [
         'integer' => [
             'regexp' => '/^\-?\d+$/',
             'allow_negative' => false,
@@ -141,7 +141,7 @@ class Validator
         ],
     ];
 
-    private $path = [];
+    private array $path = [];
 
     /**
      * 数据是否符合检查规则，不抛出异常而是返回boolean.
@@ -151,7 +151,7 @@ class Validator
      *
      * @return bool
      */
-    public function is(array $values, array $rules)
+    public function is(array $values, array $rules): bool
     {
         try {
             $this->execute($values, $rules);
@@ -176,7 +176,7 @@ class Validator
             }
 
             $value = $values[$key];
-            if ('' === $value || $value === [] || null === $value) {
+            if ($value === '' || $value === [] || null === $value) {
                 if (!$rule['allow_empty']) {
                     throw $this->exception($key, 'not allow empty');
                 }
@@ -190,7 +190,7 @@ class Validator
         return true;
     }
 
-    protected function check($key, $value, array $rule)
+    protected function check($key, $value, array $rule): bool
     {
         if (!isset($rule['__normalized__'])) {
             $rule = $this->normalizeRule($rule);
@@ -208,7 +208,7 @@ class Validator
         }
     }
 
-    protected function checkScalar($key, $value, array $rule)
+    protected function checkScalar($key, $value, array $rule): bool
     {
         if (isset($rule['same'])) {
             if ($value === $rule['same']) {
@@ -265,7 +265,7 @@ class Validator
         return true;
     }
 
-    protected function checkArray($key, $value, array $rule)
+    protected function checkArray($key, $value, array $rule): bool
     {
         if (!is_array($value)) {
             throw $this->exception($key, 'is not array type');
@@ -308,18 +308,18 @@ class Validator
         return true;
     }
 
-    protected function checkJson($key, $value, array $rule)
+    protected function checkJson($key, $value, array $rule): bool
     {
         try {
             $value = \Owl\safe_json_decode($value, true);
-        } catch (\UnexpectedValueException $ex) {
+        } catch (\Throwable $ex) {
             throw $this->exception($key, 'json_decode() falied, ' . $ex->getMessage());
         }
 
         return $this->checkArray($key, $value, $rule);
     }
 
-    protected function checkObject($key, $value, array $rule)
+    protected function checkObject($key, $value, array $rule): bool
     {
         if (!is_object($value)) {
             throw $this->exception($key, 'is not object');
@@ -332,7 +332,7 @@ class Validator
         return true;
     }
 
-    protected function normalizeRule(array $rule)
+    protected function normalizeRule(array $rule): array
     {
         $rule['type'] = isset($rule['type']) ? strtolower($rule['type']) : 'string';
         switch ($rule['type']) {
@@ -370,6 +370,11 @@ class Validator
         return $rule;
     }
 
+    public static function setType($type, array $rule): void
+    {
+        static::$types[$type] = $rule;
+    }
+
     private function exception($key, $message)
     {
         $this->path[] = $key;
@@ -379,10 +384,5 @@ class Validator
         $exception->parameter = $key;
 
         return $exception;
-    }
-
-    public static function setType($type, array $rule)
-    {
-        static::$types[$type] = $rule;
     }
 }

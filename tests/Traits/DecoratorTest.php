@@ -21,14 +21,14 @@ class DecoratorTest extends TestCase
 
 class Foo
 {
-    public $message;
+    public string $message;
 
-    public function setMessage($message)
+    public function setMessage(string $message)
     {
         $this->message = $message;
     }
 
-    public function getMessage()
+    public function getMessage(): string
     {
         return $this->message;
     }

@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Owl\Traits;
 
-// 单例模式
+/**
+ * Singleton 单例模式
+ */
 trait Singleton
 {
-    protected static $__instances__ = [];
+    protected static array $__instances__ = [];
 
     protected function __construct()
     {
@@ -18,10 +20,7 @@ trait Singleton
         throw new \Exception('Cloning ' . __CLASS__ . ' is not allowed');
     }
 
-    /**
-     * @return static
-     */
-    public static function getInstance()
+    public static function getInstance(): static
     {
         $class = get_called_class();
 
@@ -32,7 +31,7 @@ trait Singleton
         return static::$__instances__[$class];
     }
 
-    public static function resetInstance()
+    public static function resetInstance(): void
     {
         $class = get_called_class();
         unset(static::$__instances__[$class]);

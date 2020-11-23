@@ -38,19 +38,19 @@ namespace Owl\Traits;
  */
 trait Decorator
 {
-    protected $reference;
+    protected mixed $reference;
 
-    public function __get($key)
+    public function __get($key): mixed
     {
         return $this->getReference()->$key;
     }
 
-    public function __set($key, $value)
+    public function __set($key, $value): void
     {
         $this->getReference()->$key = $value;
     }
 
-    public function __call($method, array $args)
+    public function __call($method, array $args): mixed
     {
         $reference = $this->getReference();
 
@@ -59,7 +59,7 @@ trait Decorator
              : $reference->$method();
     }
 
-    protected function getReference()
+    protected function getReference(): mixed
     {
         if (!$this->reference) {
             throw new \Exception(get_class($this) . ': undefined reference object.');

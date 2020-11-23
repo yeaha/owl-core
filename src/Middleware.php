@@ -45,7 +45,8 @@ use Owl\Middleware\Arguments;
  */
 class Middleware
 {
-    protected $handlers = [];
+    /** @var callable[] $handlers */
+    protected array $handlers = [];
 
     /**
      * 添加一个新的中间件到队列中.
@@ -68,13 +69,18 @@ class Middleware
     /**
      * 执行队列里的所有中间件
      * 调用此方法传递的任意参数都会被传递给每个中间件.
+     *
+     * @param array $arguments
+     * @param callable[] $handlers
+     *
+     * @return mixed
      */
     public function execute(array $arguments = [], array $handlers = [])
     {
         $handlers = $handlers ?: $this->handlers;
 
         if (!$handlers) {
-            return;
+            return null;
         }
 
         $stack = [];
@@ -127,7 +133,7 @@ class Middleware
     /**
      * 清空中间件队列.
      */
-    public function reset()
+    public function reset(): void
     {
         $this->handlers = [];
     }
