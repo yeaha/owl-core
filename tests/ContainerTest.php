@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests;
 
+use Owl\Container;
 use PHPUnit\Framework\TestCase;
 
 class Base
@@ -18,10 +19,7 @@ class User extends Base
 
 class ContainerTest extends TestCase
 {
-    /**
-     * @var \Owl\Container
-     */
-    protected $container;
+    protected Container $container;
 
     public function testGet()
     {
@@ -63,7 +61,8 @@ class ContainerTest extends TestCase
         $this->container->set('a', function () {
             return new class{};
         });
-        $this->assertTrue($this->container->remove('a'));
+        $this->container->remove('a');
+        $this->assertFalse($this->container->has('a'));
     }
 
     protected function setUp(): void
